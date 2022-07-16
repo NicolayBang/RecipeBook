@@ -1,6 +1,7 @@
 package com.example.RecipeBook;
 
 import com.example.RecipeBook.JSONHandler.JSONConverter;
+import com.example.RecipeBook.ThreadController.RestListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.stereotype.Service;
@@ -14,49 +15,28 @@ import java.util.*;
  * TODO implement this solution for POST request https://howtodoinjava.com/jersey/jax-rs-gson-example/
  */
 @Service
-public class RecipeHandlerImpl implements RecipeHandler {
+public class RecipeHandlerThread extends Thread implements RestListener {
 
     Map<Long, Recipe> recipes = new HashMap<>();
     long currId = 1;
     JSONConverter jsonConverter = new JSONConverter();
     Gson gson;
 
-    public RecipeHandlerImpl() {
-        init();
-    }
 
-    void init() {
-        gson = new GsonBuilder().registerTypeAdapter(Recipe.class, jsonConverter)
-                .serializeNulls().create();
 
-        Recipe recipe = new Recipe();
-        recipe.setId(currId);
-        recipe.setName("Traditional Andalucian Gazpacho");
-        recipe.setDescription("Produces 1L of gazpacho. Recipe from Spanish newspaper 'La Vanguardi', ");
-        recipe.addIngredient("1Kg Ripe Tomatoes, ");
-        recipe.addIngredient("1 Green Italian Pepper, ");
-        recipe.addIngredient("1 Cucumber, ");
-        recipe.addIngredient("1 Garlic Clove, ");
-        recipe.addIngredient("3 tbsp. Olive Oil, ");
-        recipe.addIngredient("3 tbsp. White Wine Vinegar, ");
-        recipe.addIngredient("A Pinch of Salt");
-        recipe.setDirections("Mix it all in a blender and serve cold");
-        recipes.put(recipe.getId(), recipe);
-    }
-
-    @Override
+    //@Override
     public String getRecipes() {
         Collection<Recipe> results = recipes.values();
         List<Recipe> response = new ArrayList<>(results);
         return gson.toJson(response);
     }
 
-    @Override
+   // @Override
     public String getRecipe(Long id) {
         return gson.toJson(recipes.get(id));
     }
 
-    @Override
+   // @Override
     public Response createRecipe(String gsonPost) throws IOException {
         Recipe recipe = gson.fromJson(String.valueOf(gsonPost), Recipe.class);
         recipe.setId(++currId);
@@ -85,7 +65,7 @@ public class RecipeHandlerImpl implements RecipeHandler {
 //        }
 //    }
 
-    @Override
+    //@Override
     public Response updateRecipe(String gsonPut) {
         Recipe recipe = gson.fromJson(String.valueOf(gsonPut), Recipe.class);
         Recipe currRecipe = recipes.get(recipe.getId());
@@ -99,7 +79,7 @@ public class RecipeHandlerImpl implements RecipeHandler {
         return response;
     }
 
-    @Override
+   // @Override
     public Response deleteRecipe(Long id) {
         Recipe recipe = recipes.get(id);
 
