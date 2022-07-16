@@ -86,10 +86,9 @@ public class RecipeHandlerImpl implements RecipeHandler {
 //    }
 
     @Override
-    public Response updateRecipe(Recipe recipe) {
-
+    public Response updateRecipe(String gsonPut) {
+        Recipe recipe = gson.fromJson(String.valueOf(gsonPut), Recipe.class);
         Recipe currRecipe = recipes.get(recipe.getId());
-
         Response response;
         if (currRecipe != null) {
             recipes.put(recipe.getId(), recipe);
