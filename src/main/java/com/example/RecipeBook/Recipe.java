@@ -9,20 +9,23 @@ public class Recipe {
     private long id;
     private String name;
     private String description;
-    private ArrayList<String> ingredients;
+    private StringBuilder ingredients;
     private String directions;
 
-
-    public ArrayList<String> getIngredients () {return ingredients;}
+    public Recipe() {
+    }
+    public StringBuilder getIngredients () {return ingredients;}
 
     public void addIngredient(String ingredient) {
         if (ingredients == null) {
-            ingredients = new ArrayList<>();
+            ingredients = new StringBuilder();
         }
-        ingredients.add(ingredient);
+        ingredients.append(ingredient);
     }
 
-    public void setIngredients(ArrayList<String> ingredients) {
+
+
+    public void setIngredients(StringBuilder ingredients) {
         this.ingredients = ingredients;
     }
 
