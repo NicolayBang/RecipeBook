@@ -1,20 +1,10 @@
 package com.example.RecipeBook;
 
-import com.google.gson.Gson;
-import org.springframework.web.bind.annotation.PostMapping;
-
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.Provider;
 import java.io.IOException;
-import java.util.List;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
-//@Provider
-//@Produces(MediaType.APPLICATION_JSON)
-//@Consumes( {MediaType.APPLICATION_JSON} )
 @Path("/recipe_handler")
 public interface RecipeHandler {
 
