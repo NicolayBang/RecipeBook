@@ -12,8 +12,8 @@ public class Recipe {
     private StringBuilder ingredients;
     private String directions;
 
-    public Recipe() {
-    }
+//    public Recipe() {
+//    }
     public StringBuilder getIngredients () {return ingredients;}
 
     public void addIngredient(String ingredient) {

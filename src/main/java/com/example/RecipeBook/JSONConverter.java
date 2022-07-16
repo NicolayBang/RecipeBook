@@ -4,40 +4,7 @@ import com.google.gson.*;
 
 import java.lang.reflect.Type;
 /*
-* Implement this solution: https://www.codeproject.com/Tips/1159537/Simple-JSON-REST-Consumption-with-GSON-API
-*
-* public class JsonDeserializerEmployee implements JsonDeserializer<Employee>{
 
-	public Employee deserialize(JsonElement json, Type typeOfT,
-	JsonDeserializationContext context) throws JsonParseException {
-
-	    JsonObject employeeJson = json.getAsJsonObject();
-	    int id = employeeJson.get("id").getAsInt();
-	    String firstName = employeeJson.get("first_name").getAsString();
-	    String lastName = employeeJson.get("last_name").getAsString();
-	    Date date = null;
-
-		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy, hh:mm:ss a", Locale.ENGLISH);
-			date = sdf.parse(employeeJson.get("date").getAsString() );
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-
-	    String photoPath = employeeJson.get("photo").getAsString();
-	    boolean married =employeeJson.get("married").getAsBoolean();
-
-	    Employee employee = new Employee();
-	    employee.setId(id);
-	    employee.setFirstName(firstName);
-	    employee.setLastName(lastName);
-	    employee.setDate(date);
-	    employee.setPhoto(photoPath);
-	    employee.setMarried(married);
-
-	    return employee;
-	}
-}
 *  */
 
 public class JSONConverter implements JsonDeserializer<Recipe> {

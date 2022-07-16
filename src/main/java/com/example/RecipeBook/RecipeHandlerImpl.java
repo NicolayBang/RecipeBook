@@ -3,8 +3,9 @@ package com.example.RecipeBook;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.ws.rs.core.Response;
 import java.io.IOException;
@@ -16,27 +17,36 @@ import java.util.*;
 
 /**
  * TODO Make this a singleton class for implementing multithreaded access to the database.
+ * TODO implement this solution for POST request https://howtodoinjava.com/jersey/jax-rs-gson-example/
  */
 @Service
 public class RecipeHandlerImpl implements RecipeHandler {
-
-    @Bean
-    public com.google.gson.Gson jsonProvider(){
-        Gson jsonProvider = new Gson();
-        return jsonProvider;
-    }
+//    @Bean
+//    public org.codehaus.jackson.jaxrs.JacksonJsonProvider jsonProvider(){
+//        JacksonJsonProvider jsonProvider = new JacksonJsonProvider();
+//        return jsonProvider;
+//    }
+//    @Bean
+//    public com.google.gson.Gson jsonProvider(){
+//        Gson jsonProvider = new Gson();
+//        return jsonProvider;
+//    }
 
     Map<Long, Recipe> recipes = new HashMap<>();
     long currId = 1;
     JSONConverter jsonConverter = new JSONConverter();
+    GSONHandler gsonHandler = new GSONHandler();
     Gson gson;
+    ApplicationConfig applicationConfig = new ApplicationConfig();
 
     public RecipeHandlerImpl(){
         init();
     }
     void init(){
         gson = new GsonBuilder().registerTypeAdapter(Recipe.class, jsonConverter)
-                .serializeNulls().create();
+                  .serializeNulls().create();
+//        applicationConfig = new ApplicationConfig();
+//        gsonHandler = new GSONHandler();
 
     Recipe recipe = new Recipe();
     recipe.setId(currId);
@@ -66,12 +76,16 @@ public class RecipeHandlerImpl implements RecipeHandler {
     }
 
     @Override
-    public Response createRecipe(Gson gsonPost) throws IOException {
-        JsonReader reader = gsonPost.newJsonReader(new StringReader(gsonPost.toString()));
+//    @PostMapping(
+//            value = "/recipes", consumes = "application/json", produces = "application/json")
+    public Response createRecipe(String gsonPost) throws IOException {
+//        JsonReader reader = gsonPost.toString();
         Recipe recipe = gson.fromJson(String.valueOf(gsonPost), Recipe.class);
-        readRecipe(reader, recipe);
+//        readRecipe(reader, recipe);
+
         recipe.setId(++currId);
         recipes.put(recipe.getId(), recipe);
+
         return Response.ok(recipe).build();
     }
 

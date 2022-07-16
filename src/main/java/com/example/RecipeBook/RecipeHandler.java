@@ -12,9 +12,9 @@ import java.util.List;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
-@Provider
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes( {MediaType.APPLICATION_JSON} )
+//@Provider
+//@Produces(MediaType.APPLICATION_JSON)
+//@Consumes( {MediaType.APPLICATION_JSON} )
 @Path("/recipe_handler")
 public interface RecipeHandler {
 
@@ -25,12 +25,10 @@ public interface RecipeHandler {
     @Path("/recipe/{id}")
     @GET
     String getRecipe(@PathParam("id") Long id);
-//
+
     @Path("/recipes")
     @POST
-@PostMapping(
-        value = "/recipes", consumes = "application/json", produces = "application/json")
-    Response createRecipe(Gson gsonPost) throws IOException;
+    Response createRecipe(String gsonPost) throws IOException;
 
     @Path("/recipes")
     @PUT
