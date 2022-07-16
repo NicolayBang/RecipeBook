@@ -22,7 +22,7 @@ public interface RecipeHandler {
 
     @Path("/recipes")
     @PUT
-    Response updateRecipe(Recipe recipe);
+    Response updateRecipe(String gsonPut);
 
     @Path("/recipe/{id}")
     @DELETE
