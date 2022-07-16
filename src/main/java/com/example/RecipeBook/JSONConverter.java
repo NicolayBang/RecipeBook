@@ -23,13 +23,14 @@ public class JSONConverter implements JsonDeserializer<Recipe> {
     public Recipe deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
         JsonObject jsonObject = jsonElement.getAsJsonObject();
         Recipe recipe = new Recipe();
-        recipe.setId(jsonObject.get("id").getAsLong());
+
+       if(jsonObject.get("id") != null) {
+           recipe.setId(jsonObject.get("id").getAsLong());
+       }else{recipe.setId(2);} //TODO change this to increment id
+
         recipe.setName(jsonObject.get("name").getAsString());
         recipe.setDescription(jsonObject.get("description").getAsString());
-        JsonArray ingredients = jsonObject.get("ingredients").getAsJsonArray();
-        for (JsonElement ingredient : ingredients) {
-            recipe.addIngredient(ingredient.getAsString());
-        }
+        recipe.setIngredients(new StringBuilder(jsonObject.get("ingredients").getAsString()));
         recipe.setDirections(jsonObject.get("directions").getAsString());
         return recipe;
     }
