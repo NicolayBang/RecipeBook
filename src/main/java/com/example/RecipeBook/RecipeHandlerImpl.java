@@ -31,17 +31,24 @@ public class RecipeHandlerImpl implements RecipeHandler {
 //        Gson jsonProvider = new Gson();
 //        return jsonProvider;
 //    }
-
+//    private static RecipeHandlerImpl instance = null;
     Map<Long, Recipe> recipes = new HashMap<>();
     long currId = 1;
     JSONConverter jsonConverter = new JSONConverter();
     GSONHandler gsonHandler = new GSONHandler();
     Gson gson;
-    ApplicationConfig applicationConfig = new ApplicationConfig();
+   // ApplicationConfig applicationConfig = new ApplicationConfig();
 
     public RecipeHandlerImpl(){
         init();
     }
+
+//    public static RecipeHandlerImpl getInstance(){
+//        if(instance == null){
+//            instance = new RecipeHandlerImpl();
+//        }
+//        return instance;
+//    }
     void init(){
         gson = new GsonBuilder().registerTypeAdapter(Recipe.class, jsonConverter)
                   .serializeNulls().create();
