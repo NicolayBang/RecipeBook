@@ -1,8 +1,6 @@
 package com.example.RecipeBook;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
-
 
 @XmlRootElement(name="Recipe")
 public class Recipe {
@@ -12,8 +10,6 @@ public class Recipe {
     private StringBuilder ingredients;
     private String directions;
 
-//    public Recipe() {
-//    }
     public StringBuilder getIngredients () {return ingredients;}
 
     public void addIngredient(String ingredient) {
@@ -22,8 +18,6 @@ public class Recipe {
         }
         ingredients.append(ingredient);
     }
-
-
 
     public void setIngredients(StringBuilder ingredients) {
         this.ingredients = ingredients;
