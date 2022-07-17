@@ -1,7 +1,11 @@
 package com.example.RecipeBook.ThreadController;
 
+import com.example.RecipeBook.Data.MockDatabase;
+import com.example.RecipeBook.Recipe;
 import com.example.RecipeBook.RecipeHandler;
 import com.example.RecipeBook.RecipeHandlerThread;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.ws.rs.core.Response;
 import java.io.IOException;
@@ -9,6 +13,17 @@ import java.io.IOException;
 @org.springframework.web.bind.annotation.RestController
 
 public class RecipeHandlerImpl implements RestListener, RecipeHandler {
+
+private final MockDatabase mockDatabase = new MockDatabase();
+private static final RecipeHandlerImpl recipeHandler = new RecipeHandlerImpl();
+
+    public static RecipeHandlerImpl getInstance() {
+        return recipeHandler;
+    }
+
+    public  MockDatabase getMockDatabase() {
+        return mockDatabase;
+    }
 
 
     @Override

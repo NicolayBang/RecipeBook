@@ -1,6 +1,8 @@
 package com.example.RecipeBook;
 
+import com.example.RecipeBook.Data.MockDatabase;
 import com.example.RecipeBook.JSONHandler.JSONConverter;
+import com.example.RecipeBook.ThreadController.RecipeHandlerImpl;
 import com.example.RecipeBook.ThreadController.RestListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -17,30 +19,36 @@ import java.util.*;
 @Service
 public class RecipeHandlerThread extends Thread implements RestListener {
 
-    Map<Long, Recipe> recipes = new HashMap<>();
-    long currId = 1;
-    JSONConverter jsonConverter = new JSONConverter();
-    Gson gson;
+    //Map<Long, Recipe> recipes = new HashMap<>();
 
+    RecipeHandlerImpl recipeHandler;
+
+
+
+    public RecipeHandlerThread() {
+       recipeHandler = RecipeHandlerImpl.getInstance();
+    }
 
 
     //@Override
     public String getRecipes() {
-        Collection<Recipe> results = recipes.values();
+        Collection<Recipe> results = RecipeHandlerImpl.getInstance().getMockDatabase().recipes.values();
         List<Recipe> response = new ArrayList<>(results);
-        return gson.toJson(response);
+        return recipeHandler.getMockDatabase().gson.toJson(response);
     }
 
    // @Override
     public String getRecipe(Long id) {
-        return gson.toJson(recipes.get(id));
+        return recipeHandler.getMockDatabase().gson.toJson(RecipeHandlerImpl.getInstance().getMockDatabase().recipes.get(id));
     }
 
    // @Override
     public Response createRecipe(String gsonPost) throws IOException {
-        Recipe recipe = gson.fromJson(String.valueOf(gsonPost), Recipe.class);
-        recipe.setId(++currId);
-        recipes.put(recipe.getId(), recipe);
+
+        Recipe recipe = recipeHandler.getMockDatabase().gson.fromJson(String.valueOf(gsonPost), Recipe.class);
+        recipeHandler.getMockDatabase().currId++;
+        recipe.setId( recipeHandler.getMockDatabase().currId);
+        RecipeHandlerImpl.getInstance().getMockDatabase().recipes.put(recipe.getId(), recipe);
         return Response.ok(recipe).build();
     }
 
@@ -67,11 +75,11 @@ public class RecipeHandlerThread extends Thread implements RestListener {
 
     //@Override
     public Response updateRecipe(String gsonPut) {
-        Recipe recipe = gson.fromJson(String.valueOf(gsonPut), Recipe.class);
-        Recipe currRecipe = recipes.get(recipe.getId());
+        Recipe recipe = recipeHandler.getMockDatabase().gson.fromJson(String.valueOf(gsonPut), Recipe.class);
+        Recipe currRecipe = RecipeHandlerImpl.getInstance().getMockDatabase().recipes.get(recipe.getId());
         Response response;
         if (currRecipe != null) {
-            recipes.put(recipe.getId(), recipe);
+            RecipeHandlerImpl.getInstance().getMockDatabase().recipes.put(recipe.getId(), recipe);
             response = Response.ok().build();
         } else {
             response = Response.notModified().build();
@@ -81,11 +89,11 @@ public class RecipeHandlerThread extends Thread implements RestListener {
 
    // @Override
     public Response deleteRecipe(Long id) {
-        Recipe recipe = recipes.get(id);
+        Recipe recipe = RecipeHandlerImpl.getInstance().getMockDatabase().recipes.get(id);
 
         Response response;
         if (recipe != null) {
-            recipes.remove(id);
+            RecipeHandlerImpl.getInstance().getMockDatabase().recipes.remove(id);
             response = Response.ok().build();
         } else {
             response = Response.notModified().build();
