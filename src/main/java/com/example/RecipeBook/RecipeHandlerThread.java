@@ -1,9 +1,8 @@
 package com.example.RecipeBook;
 
 import com.example.RecipeBook.JSONHandler.JSONConverter;
+import com.example.RecipeBook.MockDatabase.DataBase;
 import com.example.RecipeBook.ThreadController.RestListener;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.springframework.stereotype.Service;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
@@ -16,31 +15,36 @@ import java.util.*;
  */
 @Service
 public class RecipeHandlerThread extends Thread implements RestListener {
+DataBase dataBase = DataBase.getInstance();
 
-    Map<Long, Recipe> recipes = new HashMap<>();
-    long currId = 1;
-    JSONConverter jsonConverter = new JSONConverter();
-    Gson gson;
+
+  //  JSONConverter jsonConverter = new JSONConverter();
+
+
+//    public RecipeHandlerThread() {
+//        init();
+//    }
 
 
 
     //@Override
     public String getRecipes() {
-        Collection<Recipe> results = recipes.values();
+        Collection<Recipe> results = dataBase.recipes.values();
         List<Recipe> response = new ArrayList<>(results);
-        return gson.toJson(response);
+        return dataBase.gson.toJson(response);
     }
 
    // @Override
     public String getRecipe(Long id) {
-        return gson.toJson(recipes.get(id));
+        return dataBase.gson.toJson(dataBase.recipes.get(id));
     }
 
    // @Override
     public Response createRecipe(String gsonPost) throws IOException {
-        Recipe recipe = gson.fromJson(String.valueOf(gsonPost), Recipe.class);
-        recipe.setId(++currId);
-        recipes.put(recipe.getId(), recipe);
+        Recipe recipe =dataBase.gson.fromJson(String.valueOf(gsonPost), Recipe.class);
+        dataBase.currId++;
+        recipe.setId(dataBase.currId);
+        dataBase.recipes.put(recipe.getId(), recipe);
         return Response.ok(recipe).build();
     }
 
@@ -67,11 +71,11 @@ public class RecipeHandlerThread extends Thread implements RestListener {
 
     //@Override
     public Response updateRecipe(String gsonPut) {
-        Recipe recipe = gson.fromJson(String.valueOf(gsonPut), Recipe.class);
-        Recipe currRecipe = recipes.get(recipe.getId());
+        Recipe recipe = dataBase.gson.fromJson(String.valueOf(gsonPut), Recipe.class);
+        Recipe currRecipe = dataBase.recipes.get(recipe.getId());
         Response response;
         if (currRecipe != null) {
-            recipes.put(recipe.getId(), recipe);
+            dataBase.recipes.put(recipe.getId(), recipe);
             response = Response.ok().build();
         } else {
             response = Response.notModified().build();
@@ -81,15 +85,17 @@ public class RecipeHandlerThread extends Thread implements RestListener {
 
    // @Override
     public Response deleteRecipe(Long id) {
-        Recipe recipe = recipes.get(id);
+        Recipe recipe = dataBase.recipes.get(id);
 
         Response response;
         if (recipe != null) {
-            recipes.remove(id);
+            dataBase.recipes.remove(id);
             response = Response.ok().build();
         } else {
             response = Response.notModified().build();
         }
         return response;
     }
+    //Make a method that return a random array of 100 numbers
+
 }
