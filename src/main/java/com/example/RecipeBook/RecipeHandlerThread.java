@@ -51,29 +51,6 @@ public class RecipeHandlerThread extends Thread implements RestListener {
         RecipeHandlerImpl.getInstance().getMockDatabase().recipes.put(recipe.getId(), recipe);
         return Response.ok(recipe).build();
     }
-
-//    public void readRecipe(JsonReader reader, Recipe recipe) throws IOException {
-//        while (reader.hasNext()) {
-//            String name = reader.nextName();
-//            if (name.equals("id")) {
-//                recipe.setId(reader.nextLong());
-//            } else if (name.equals("name")) {
-//                recipe.setName(reader.nextString());
-//            } else if (name.equals("description")) {
-//                recipe.setDescription(reader.nextString());
-//            } else if (name.equals("ingredients")) {
-//                recipe.setIngredients(new StringBuilder(reader.nextString()));
-//            } else if (name.equals("directions")) {
-//                recipe.setDirections(reader.nextString());
-//            } else {
-//                reader.skipValue();
-//            }
-//
-//            recipes.put(recipe.getId(), recipe);
-//        }
-//    }
-
-    //@Override
     public Response updateRecipe(String gsonPut) {
         Recipe recipe = recipeHandler.getMockDatabase().gson.fromJson(String.valueOf(gsonPut), Recipe.class);
         Recipe currRecipe = RecipeHandlerImpl.getInstance().getMockDatabase().recipes.get(recipe.getId());
